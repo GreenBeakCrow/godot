@@ -201,6 +201,8 @@ private:
 	void _edit_files_with_filter(DirAccess *da, const Vector<String> &p_filters, Set<String> &r_list, bool exclude);
 	void _edit_filter_list(Set<String> &r_list, const String &p_filter, bool exclude);
 
+	static bool _is_raw_resource(const String &resource_type);
+
 	static Error _add_shared_object(void *p_userdata, const SharedObject &p_so);
 
 protected:

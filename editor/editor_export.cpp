@@ -512,6 +512,13 @@ void EditorExportPlatform::_edit_filter_list(Set<String> &r_list, const String &
 	memdelete(da);
 }
 
+bool EditorExportPlatform::_is_raw_resource(const String &resource_type) {
+	// "Raw" resource files should be copied as is on export and any matching
+	// .import file should be ignored.
+	// This is currently true only for .csv files not used for translation.
+	return resource_type == "TextFile";
+}
+
 void EditorExportPlugin::set_export_preset(const Ref<EditorExportPreset> &p_preset) {
 
 	if (p_preset.is_valid()) {
@@ -741,7 +748,7 @@ Error EditorExportPlatform::export_project_files(const Ref<EditorExportPreset> &
 		String path = E->get();
 		String type = ResourceLoader::get_resource_type(path);
 
-		if (FileAccess::exists(path + ".import")) {
+		if (!_is_raw_resource(type) && FileAccess::exists(path + ".import")) {
 			//file is imported, replace by what it imports
 			Ref<ConfigFile> config;
 			config.instance();
